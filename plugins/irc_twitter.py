@@ -12,6 +12,7 @@ from base import BasePlugin
 
 class IRCPlugin(BasePlugin):
     name = "twitter"
+    enabled = False
 
     def _validate(self, event):
         if self.is_pubmsg(event):
@@ -27,7 +28,7 @@ class IRCPlugin(BasePlugin):
 
     def run(self):
         reg = re.compile(r'((?:http|https)://twitter.com/.+/status/\d+)')
-        while True:
+        while not self.stopped:
             try:
                 msg = self._queue.get(timeout=3)
             except Empty:

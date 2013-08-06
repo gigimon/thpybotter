@@ -29,3 +29,9 @@ class IRCBot(irc.bot.SingleServerIRCBot):
         for p in self._plugins:
             p.start()
         super(IRCBot, self).start()
+
+    def die(self):
+        for p in self._plugins:
+            p.stop()
+            p.join()
+        super(IRCBot, self).die("Bye!")

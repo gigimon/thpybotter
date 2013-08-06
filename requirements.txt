@@ -1,2 +1,3 @@
 irc
 requests
+daemon
