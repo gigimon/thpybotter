@@ -22,7 +22,7 @@ class BasePlugin(threading.Thread):
         return "Plugin: %s" % self.name
 
     def colorize(self, user, message):
-        return "\00310%s: \00314%s\003" % (user, message)
+        return u"\00310%s: \00314%s\003" % (user, message)
 
     def is_pubmsg(self, event):
         if event.type == 'pubmsg':

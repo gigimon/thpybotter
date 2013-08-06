@@ -24,6 +24,9 @@ def run_daemonize():
     context.signal_map = {
         signal.SIGTERM: destroy
     }
+    context.stdout = open('stdout.log', 'wr')
+    context.stderr = open('stderr.log', 'wr')
+
     with context:
         ircbot.start()
 
