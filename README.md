@@ -4,17 +4,21 @@ thpybotter - simple threaded python irc bot for #nnm channel
 Usage
 ======
 
-```python
-In [1]: from bot import IRCBot
+Bot can working in 2 modes:
 
-In [2]: b = IRCBot(("filezz.ru", 5557),"#nnm", "testbot", "blablabot")
+- Daemon - for this run python main.py --daemonize. If You would stop bot, send SIGTERM to process (kill 'process')
 
-In [3]: b.start()
-```
+- Standalone - for this run python main.py, for stop, press CTRL-C
+
+
 
 TODO:
 =====
 
-    Daemonize - start/stop daemon
-    Logging - log working process
-    Plugins - many many pluuugiiiins! (twitter via api, vk, admin, logs)
+- Change config format for .ini
+
+- Add Twitter streaming plugin
+
+- Add log plugin
+
+- Change vkontakte parser for use VK API
