@@ -1,18 +1,22 @@
 import os
 import signal
+import logging
 from optparse import OptionParser
 
 import lockfile
 import daemon
 
+import log
 import config
 from bot import IRCBot
 
+LOG = logging.getLogger('main')
 
 ircbot = IRCBot(config.SERVER, config.CHANNELS, config.NICKNAME, config.REALNAME)
 
 
 def destroy(*args):
+    LOG.info("Destroy IRC Bot by signal")
     ircbot.die()
 
 
@@ -37,6 +41,9 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     if options.daemonize:
+        LOG.info("Run bot in daemonize mode")
         run_daemonize()
     else:
+        LOG.info("Run bot in standalone mode")
+        signal.signal(signal.SIGINT, destroy)
         ircbot.start()

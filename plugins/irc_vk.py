@@ -1,9 +1,15 @@
 __author__ = 'Darwin'
 
-import requests
 import re
-from base import BasePlugin
+import logging
+
+import requests
 from bs4 import BeautifulSoup
+
+from base import BasePlugin
+
+
+LOG = logging.getLogger("irc_vkontakte")
 
 
 class IRCPlugin(BasePlugin):
@@ -23,7 +29,9 @@ class IRCPlugin(BasePlugin):
       
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
+        LOG.debug("Find vkontakte urls: %s" % urls)
         for url in urls:
+            LOG.info("Processing %s" % url)
             try:
                 soup = BeautifulSoup(requests.get(url).content)
                 post_text = soup.find("div", class_="wall_post_text").text
@@ -33,5 +41,5 @@ class IRCPlugin(BasePlugin):
                 pretty_text = self.colorize(author, post_text, likes)
                 for text in self._split(pretty_text):
                     msg[0].privmsg(msg[1].target, text)
-            except:
-                pass
+            except Exception as e:
+                LOG.warning("Problem in parsing page: %s" % e)
