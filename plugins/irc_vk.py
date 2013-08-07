@@ -5,6 +5,7 @@ import re
 from base import BasePlugin
 from bs4 import BeautifulSoup
 
+
 class IRCPlugin(BasePlugin):
     name = "vkontakte"
     enabled = True
@@ -15,6 +16,7 @@ class IRCPlugin(BasePlugin):
             if 'vk.com' in ' '.join(event.arguments):
                 return True
         return False
+
     def _split(self, message):
         for i in range(0, len(message), 300):
             yield message[i:i+300]

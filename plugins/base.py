@@ -26,6 +26,7 @@ class BasePlugin(threading.Thread):
             return u"\00310%s: \00314%s\003" % (user, message)
         elif likes:
             return u"\00310%s: \00314%s \00310(+%s)\003" % (user, message, likes)
+
     def is_pubmsg(self, event):
         if event.type == 'pubmsg':
             return True
