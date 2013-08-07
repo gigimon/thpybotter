@@ -21,9 +21,11 @@ class BasePlugin(threading.Thread):
     def __str__(self):
         return "Plugin: %s" % self.name
 
-    def colorize(self, user, message):
-        return u"\00310%s: \00314%s\003" % (user, message)
-
+    def colorize(self, user, message, likes=None):
+        if not likes:
+            return u"\00310%s: \00314%s\003" % (user, message)
+        elif likes:
+            return u"\00310%s: \00314%s \00310(+%s)\003" % (user, message, likes)
     def is_pubmsg(self, event):
         if event.type == 'pubmsg':
             return True
