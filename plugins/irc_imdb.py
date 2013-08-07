@@ -1,12 +1,11 @@
 __author__ = 'Darwin'
 
 import requests
-import re
 from base import BasePlugin
 import json
 import logging 
 
-LOG = logging.getLogger("irc_vkontakte")
+LOG = logging.getLogger("irc_imdb")
 
 class IRCPlugin(BasePlugin):
     name = "imdb"
