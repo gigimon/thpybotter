@@ -29,11 +29,14 @@ class IRCPlugin(BasePlugin):
       
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
+        headers={"User-Agent":
+                     "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36"
+        }
         LOG.debug("Find vkontakte urls: %s" % urls)
         for url in urls:
             LOG.info("Processing %s" % url)
             try:
-                soup = BeautifulSoup(requests.get(url).content)
+                soup = BeautifulSoup(requests.get(url, headers=headers).content)
                 post_text = soup.find("div", class_="wall_post_text").text
                 author = soup.find("a", class_="fw_post_author").text
                 likes = soup.find("span", class_="fw_like_count fl_l").text
