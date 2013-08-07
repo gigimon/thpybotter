@@ -4,7 +4,7 @@ import re
 import logging
 
 import requests
-from bs4 import BeautifulSoup
+from lxml import html
 
 from base import BasePlugin
 
@@ -36,10 +36,15 @@ class IRCPlugin(BasePlugin):
         for url in urls:
             LOG.info("Processing %s" % url)
             try:
-                soup = BeautifulSoup(requests.get(url, headers=headers).content)
-                post_text = soup.find("div", class_="wall_post_text").text
-                author = soup.find("a", class_="fw_post_author").text
-                likes = soup.find("span", class_="fw_like_count fl_l").text
+                tree = html.fromstring(requests.get(url, headers=headers).content)
+                post_text = tree.xpath("//div[contains(@class, 'wall_post_text')]")
+                if post_text:
+                    post_text = post_text[0].text_content()
+                else:
+                    LOG.warning("Can't get post content in url %s" % url)
+                    continue
+                author = tree.xpath("//a[contains(@class, 'fw_post_author')]")[0].text
+                likes = tree.xpath("//span[contains(@class, 'fw_like_count')]")[0].text
 
                 pretty_text = self.colorize(author, post_text, likes)
                 for text in self._split(pretty_text):
