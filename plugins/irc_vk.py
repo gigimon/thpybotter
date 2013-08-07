@@ -1,7 +1,5 @@
 __author__ = 'Darwin'
 
-from Queue import Empty
-
 import requests
 import re
 from base import BasePlugin
