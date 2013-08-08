@@ -1,6 +1,5 @@
 __author__ = 'Darwin'
 
-import json
 import requests
 import logging 
 
@@ -23,7 +22,7 @@ class IRCPlugin(BasePlugin):
             name = " ".join(msg[1].arguments[0].split(" ")[1:])
             url = "http://www.omdbapi.com/?t=%s" % name
             imdb_url = "http://www.imdb.com/title/%s/"
-            json_api=json.loads(requests.get(url).content)
+            json_api=requests.get(url).json()
             line1 = "\x02%s\x02 (%s) - %s | %s" % (json_api['Title'], json_api['Year'], imdb_url % json_api['imdbID'], json_api['Genre'])
             line2 = json_api['Plot'][:460]
             line3 = "\x033 %s/10 - (%s votes) | %s" % (json_api['imdbRating'], json_api['imdbVotes'], json_api['Runtime'])
