@@ -44,12 +44,13 @@ def run_daemonize():
         LOG.info("Run bot loop")
         try:
             ircbot.start()
-        except:
+        except Exception, e:
+            LOG.error("Bot failed with error: %s" % e)
             for p in ircbot._plugins:
                 if p.is_alive():
                     p.stop()
                     p.join()
-
+            raise
 
 if __name__ == '__main__':
     parser = OptionParser()
@@ -65,4 +66,12 @@ if __name__ == '__main__':
     else:
         LOG.info("Run bot in standalone mode")
         signal.signal(signal.SIGINT, destroy)
-        ircbot.start()
+        try:
+            ircbot.start()
+        except Exception, e:
+            LOG.error("Bot failed with error: %s" % e)
+            for p in ircbot._plugins:
+                if p.is_alive():
+                    p.stop()
+                    p.join()
+            raise
