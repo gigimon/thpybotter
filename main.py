@@ -1,4 +1,5 @@
 import os
+import sys
 import signal
 import logging
 from optparse import OptionParser
@@ -12,6 +13,8 @@ from bot import IRCBot
 
 LOG = logging.getLogger('main')
 
+LOCK = lockfile.FileLock('thbotter')
+
 ircbot = IRCBot(config.SERVER, config.CHANNELS, config.NICKNAME, config.REALNAME)
 
 
@@ -21,18 +24,31 @@ def destroy(*args):
 
 
 def run_daemonize():
+    LOG.debug("Start initialize daemon")
+    bot_path = os.path.realpath(os.path.dirname(__file__))
     context = daemon.DaemonContext(
-        working_directory=os.path.realpath(os.path.curdir),
-        pidfile=lockfile.FileLock('daemon')
+        working_directory=bot_path,
+        pidfile=LOCK
     )
+    LOG.debug("Add signals map")
     context.signal_map = {
         signal.SIGTERM: destroy
     }
-    context.stdout = open('stdout.log', 'wr')
-    context.stderr = open('stderr.log', 'wr')
+    LOG.debug("Change stdout/stderr")
+    context.stdout = open(os.path.join(bot_path, 'stdout.log'), 'wr')
+    context.stderr = open(os.path.join(bot_path, 'stderr.log'), 'wr')
+    context.files_preserve = [LOG.parent.handlers[0].stream.fileno()]
 
+    LOG.debug("Start bot")
     with context:
-        ircbot.start()
+        LOG.info("Run bot loop")
+        try:
+            ircbot.start()
+        except:
+            for p in ircbot._plugins:
+                if p.is_alive():
+                    p.stop()
+                    p.join()
 
 
 if __name__ == '__main__':
@@ -41,6 +57,9 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     if options.daemonize:
+        if os.path.isfile(LOCK.lock_file):
+            print "Please delete lock file: %s" % LOCK.lock_file
+            sys.exit(1)
         LOG.info("Run bot in daemonize mode")
         run_daemonize()
     else:

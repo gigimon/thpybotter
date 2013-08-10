@@ -15,9 +15,7 @@ class IRCBot(irc.bot.SingleServerIRCBot):
         super(IRCBot, self).__init__([server], nickname, realname, reconnection_interval, **connect_params)
         LOG.info("Initialize Bot instance")
         self._default_channels = channels if isinstance(channels, (list, tuple)) else [channels]
-        LOG.info("Load plugins")
-        self._plugins = load_plugins()
-        LOG.info("Loaded plugins: %s" % self._plugins)
+        self._plugins = []
 
     def on_welcome(self, connect, event):
         for ch in self._default_channels:
@@ -26,6 +24,9 @@ class IRCBot(irc.bot.SingleServerIRCBot):
 
     def _message_process(self, connect, event):
         LOG.debug("Process message: %s" % event.arguments)
+        if event.source.nick == self.connection.get_nickname():
+            LOG.debug("It's my message!")
+            return
         for plugin in self._plugins:
             plugin.put((connect, event))
 
@@ -37,6 +38,9 @@ class IRCBot(irc.bot.SingleServerIRCBot):
 
     def start(self):
         LOG.info("Start bot")
+        LOG.info("Load plugins")
+        self._plugins = load_plugins()
+        LOG.info("Loaded plugins: %s" % self._plugins)
         for p in self._plugins:
             LOG.info("Start plugin %s" % p)
             p.start()
