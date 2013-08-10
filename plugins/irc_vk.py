@@ -15,7 +15,7 @@ LOG = logging.getLogger("irc_vkontakte")
 class IRCPlugin(BasePlugin):
     name = "vkontakte"
     enabled = True
-    reg = re.compile(r'((?:http|https)://vk.com/wall[-\d_\d]+)')
+    reg = re.compile(r'((?:http|https)://vk.com/.*wall[-\d_\d]+)')
 
     def _validate(self, event):
         if self.is_pubmsg(event):
@@ -34,7 +34,11 @@ class IRCPlugin(BasePlugin):
         }
         LOG.debug("Find vkontakte urls: %s" % urls)
         for url in urls:
+            if "feed?w=" in url:
+                url = url.replace("feed?w=", "")
+
             LOG.info("Processing %s" % url)
+
             try:
                 tree = html.fromstring(requests.get(url, headers=headers).content)
                 post_text = tree.xpath("//div[contains(@class, 'wall_post_text')]")
