@@ -46,5 +46,6 @@ class IRCPlugin(BasePlugin):
                 continue
             message = self._api.GetStatus(id[0].strip())
             user = message.GetUser()
-            tweet_text = self.colorize("%s @%s" % (user.GetName(), user.GetScreenName()), message.GetText())
+            tweet_text = self.colorize("%s @%s" % (user.GetName(), user.GetScreenName()),
+                                       message.GetText().replace('\n', ' '))
             msg[0].privmsg(msg[1].target, tweet_text)
