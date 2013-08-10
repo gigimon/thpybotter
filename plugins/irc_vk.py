@@ -24,8 +24,8 @@ class IRCPlugin(BasePlugin):
         return False
 
     def _split(self, message):
-        for i in range(0, len(message), 300):
-            yield message[i:i+300]
+        for i in range(0, len(message), 250):
+            yield message[i:i+250]
       
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
