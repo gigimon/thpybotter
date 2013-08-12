@@ -34,8 +34,8 @@ class IRCPlugin(BasePlugin):
         }
         LOG.debug("Find vkontakte urls: %s" % urls)
         for url in urls:
-            if "feed?w=" in url:
-                url = url.replace("feed?w=", "")
+            if "?w=" in url:
+                url = re.sub(".*?w=", "https://vk.com/", url)
 
             LOG.info("Processing %s" % url)
 
