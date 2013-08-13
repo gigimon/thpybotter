@@ -3,7 +3,7 @@ __author__ = 'gigimon'
 import re
 import logging
 
-import twitter
+import tweepy
 import config
 from base import BasePlugin
 
@@ -19,12 +19,9 @@ class IRCPlugin(BasePlugin):
     def __init__(self, *args, **kwargs):
         super(IRCPlugin, self).__init__(*args, **kwargs)
         try:
-            self._api = twitter.Api(
-                consumer_key=config.TWITTER_CONSUMER_KEY,
-                consumer_secret=config.TWITTER_CONSUMER_SECRET,
-                access_token_key=config.TWITTER_ACCESS_KEY,
-                access_token_secret=config.TWITTER_ACCESS_SECRET
-            )
+            auth = tweepy.OAuthHandler(config.TWITTER_CONSUMER_KEY, config.TWITTER_CONSUMER_SECRET)
+            auth.set_access_token(config.TWITTER_ACCESS_KEY, config.TWITTER_ACCESS_SECRET)
+            self._api = tweepy.API(auth)
             LOG.info("Twitter successfully initializing")
         except Exception as e:
             LOG.error("Twitter authorization failed: %s" % e)
@@ -44,8 +41,7 @@ class IRCPlugin(BasePlugin):
             id = re.findall(r"(\d+)$", url.strip())
             if not id:
                 continue
-            message = self._api.GetStatus(id[0].strip())
-            user = message.GetUser()
-            tweet_text = self.colorize("%s @%s" % (user.GetName(), user.GetScreenName()),
-                                       message.GetText().replace('\n', ' '))
+            message = self._api.get_status(id[0].strip())
+            tweet_text = self.colorize("%s @%s" % (message.user.name, message.user.screen_name),
+                                       message.text.replace('\n', ' '))
             msg[0].privmsg(msg[1].target, tweet_text)

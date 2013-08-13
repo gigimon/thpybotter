@@ -10,6 +10,5 @@ def load_plugins():
         plugin = __import__(name, globals(), locals(), ['IRCPlugin'])
         plugin = getattr(plugin, 'IRCPlugin', None)
         if plugin and plugin.enabled:
-            plugin = plugin()
             plugins.append(plugin)
     return plugins

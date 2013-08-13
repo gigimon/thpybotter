@@ -20,6 +20,7 @@ ircbot = IRCBot(config.SERVER, config.CHANNELS, config.NICKNAME, config.REALNAME
 
 def destroy(*args):
     LOG.info("Destroy IRC Bot by signal")
+    print "Stop bot by os signal"
     ircbot.die()
 
 
@@ -62,11 +63,13 @@ if __name__ == '__main__':
             print "Please delete lock file: %s" % LOCK.lock_file
             sys.exit(1)
         LOG.info("Run bot in daemonize mode")
+        print "Start bot in daemonize mode..."
         run_daemonize()
     else:
         LOG.info("Run bot in standalone mode")
         signal.signal(signal.SIGINT, destroy)
         try:
+            print "Start bot..."
             ircbot.start()
         except Exception, e:
             LOG.error("Bot failed with error: %s" % e)

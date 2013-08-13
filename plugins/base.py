@@ -6,8 +6,10 @@ class BasePlugin(threading.Thread):
     name = "baseplugin"
     enabled = True
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, conn, channels, *args, **kwargs):
         super(BasePlugin, self).__init__(*args, **kwargs)
+        self._connection = conn
+        self._channels = channels
         self._queue = Queue()
         self._stop = threading.Event()
 

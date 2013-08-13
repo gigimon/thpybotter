@@ -39,11 +39,14 @@ class IRCBot(irc.bot.SingleServerIRCBot):
     def start(self):
         LOG.info("Start bot")
         LOG.info("Load plugins")
-        self._plugins = load_plugins()
+        plugins = load_plugins()
         LOG.info("Loaded plugins: %s" % self._plugins)
-        for p in self._plugins:
+        for p in plugins:
+            LOG.info('Initialize plugin: %s' % p.name)
+            p = p(self.connection, self.channels)
             LOG.info("Start plugin %s" % p)
             p.start()
+            self._plugins.append(p)
         LOG.info("Start loop")
         super(IRCBot, self).start()
 
