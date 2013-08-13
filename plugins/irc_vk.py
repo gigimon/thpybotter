@@ -29,8 +29,8 @@ class IRCPlugin(BasePlugin):
       
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
-        headers={"User-Agent":
-                     "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36"
+        headers = {"User-Agent":
+                    "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36"
         }
         LOG.debug("Find vkontakte urls: %s" % urls)
         for url in urls:
