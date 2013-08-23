@@ -19,11 +19,11 @@ class StreamerToIrc(StreamListener):
         super(StreamerToIrc, self).__init__(*args, **kwargs)
 
     def on_status(self, status):
-        for chan in self.parent._channels:
+        for chan in self._parent._channels:
             LOG.debug("Send message to %s %s" % (chan, status.text))
             tweet_text = self._parent.colorize("%s @%s" % (status.user.name, status.user.screen_name),
                                                status.text.replace('\n', ' '))
-            self.parent._connection.privmsg(chan, tweet_text)
+            self._parent._connection.privmsg(chan, tweet_text)
         return
 
 
