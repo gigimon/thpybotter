@@ -21,7 +21,9 @@ class StreamerToIrc(StreamListener):
     def on_status(self, status):
         for chan in self.parent._channels:
             LOG.debug("Send message to %s %s" % (chan, status.text))
-            self.parent._connection.privmsg(chan, status.text)
+            tweet_text = self._parent.colorize("%s @%s" % (status.user.name, status.user.screen_name),
+                                               status.text.replace('\n', ' '))
+            self.parent._connection.privmsg(chan, tweet_text)
         return
 
 
@@ -45,4 +47,4 @@ class IRCPlugin(BasePlugin):
         except Exception as e:
             LOG.error("Twitter stream authorization failed: %s" % e)
             return
-        self._stream.filter(follow=[14317831])
+        self._stream.filter(config.TWITTER_FOLLOW_IDS)
