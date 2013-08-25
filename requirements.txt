@@ -1,4 +1,6 @@
 irc
 requests
-daemon
+python-daemon
 lockfile
+tweepy
+lxml

@@ -4,7 +4,7 @@ import re
 import logging
 
 import tweepy
-from tweepy.streaming import Stream, StreamListener
+from tweepy.streaming import Stream, StreamListener, API
 
 import config
 from base import BasePlugin
@@ -47,4 +47,15 @@ class IRCPlugin(BasePlugin):
         except Exception as e:
             LOG.error("Twitter stream authorization failed: %s" % e)
             return
-        self._stream.filter(config.TWITTER_FOLLOW_IDS)
+        followers = []
+        api = API(auth)
+        for f in config.TWITTER_FOLLOW_IDS:
+            if isinstance(f, (str, unicode)):
+                try:
+                    user_id = api.get_user(f).id
+                    followers.append(user_id)
+                except Exception:
+                    continue
+            else:
+                followers.append(f)
+        self._stream.filter()

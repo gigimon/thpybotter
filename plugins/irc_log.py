@@ -25,7 +25,7 @@ class IRCPlugin(BasePlugin):
             log_path = getattr(config, 'LOG_PATH', None)
             if log_path is None:
                 log_path = os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), '..', 'logs'))
-            log_path = os.path.join(log_path, chan)
+            log_path = os.path.join(log_path, chan, datetime.now().strftime('%Y'), datetime.now().strftime('%m'))
             if not os.path.isdir(log_path):
                 os.makedirs(log_path)
             log_file = open(os.path.join(log_path, datetime.now().strftime('%d%m%y.log')), 'a+')
