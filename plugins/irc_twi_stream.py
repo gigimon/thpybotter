@@ -55,7 +55,8 @@ class IRCPlugin(BasePlugin):
                     user_id = api.get_user(f).id
                     followers.append(user_id)
                 except Exception:
+                    LOG.debug("Can't get ID for %s" % user_id)
                     continue
             else:
                 followers.append(f)
-        self._stream.filter()
+        self._stream.filter(followers)
