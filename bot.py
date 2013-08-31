@@ -22,6 +22,9 @@ class IRCBot(irc.bot.SingleServerIRCBot):
             LOG.info("Connect to channel %s" % ch)
             connect.join(ch)
 
+    def on_disconnect(self, c, e):
+        self._on_disconnect(c, e)
+
     def _message_process(self, connect, event):
         LOG.debug("Process message: %s" % event.arguments)
         if event.source.nick == self.connection.get_nickname():
