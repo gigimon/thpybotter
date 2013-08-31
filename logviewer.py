@@ -57,7 +57,8 @@ class LogViewerHandler(SockJSConnection):
 
 LogRouter = SockJSRouter(LogViewerHandler, '/logs')
 
-if __name__ == '__main__':
+
+def main():
     app = tornado.web.Application(
         [(r"/", IndexHandler)] +
         LogRouter.urls
@@ -67,3 +68,7 @@ if __name__ == '__main__':
     print 'Listening on 0.0.0.0:8080'
 
     tornado.ioloop.IOLoop.instance().start()
+
+
+if __name__ == '__main__':
+    main()

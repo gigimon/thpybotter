@@ -458,7 +458,7 @@
 
     </div>
     <script>
-        var sock = new SockJS('http://localhost:8080/logs');
+        var sock = new SockJS(document.URL + 'logs');
         sock.onopen = function() {
             sock.send(JSON.stringify({'channel': '#nnm'}))
         };
