@@ -11,7 +11,11 @@ from config import LOG_DIR
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render('static/index.html')
+        log_path = LOG_DIR
+        if log_path is None:
+            log_path = os.path.realpath(os.path.join(os.path.realpath(os.path.dirname(__file__)), 'logs'))
+        channels = os.listdir(log_path)
+        self.render('static/index.html', channels=channels)
 
 
 class LogViewerHandler(SockJSConnection):

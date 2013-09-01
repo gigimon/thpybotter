@@ -4,6 +4,7 @@
     <title></title>
     <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://simplemodal.googlecode.com/files/jquery.simplemodal.1.4.4.min.js"></script>
     <style type="text/css">
         /* Basic Body Structure */
 
@@ -454,13 +455,11 @@
     </style>
 </head>
 <body type="channel" dir="ltr">
-    <div id="body_home">
-
-    </div>
-    <script>
+<script type="text/javascript">
+    function connect(chan){
         var sock = new SockJS(document.URL + 'logs');
         sock.onopen = function() {
-            sock.send(JSON.stringify({'channel': '#nnm'}))
+            sock.send(JSON.stringify({'channel': chan}))
         };
         sock.onmessage = function(e) {
             var data = JSON.parse(e['data'])
@@ -477,19 +476,47 @@
                             'highlight':'false',
                             'class':'line text'
                         }).prepend(
-                                  $('<p>').append(
-                                        $('<span>').attr({'class':'time'}).text(data[i]['date']+' ')
-                                  ).append(
-                                        $('<span>').attr({'class':'message', 'type':'privmsg'}).text(data[i]['message']).prepend(
-                                                $('<span>').attr({'class':'sender',
-                                                'colornumber': nick_color, 'type':'normal'}).text('<'+data[i]['user']+'> ')
-                                        )
-                                  )
-                          )
+                                        $('<p>').append(
+                                                        $('<span>').attr({'class':'time'}).text('['+data[i]['date']+'] ')
+                                                ).append(
+                                                        $('<span>').attr({'class':'message', 'type':'privmsg'}).text(data[i]['message']).prepend(
+                                                                $('<span>').attr({'class':'sender',
+                                                                    'colornumber': nick_color, 'type':'normal'}).text('<'+data[i]['user']+'> ')
+                                                        )
+                                                )
+                                )
                 )
             }
             window.scrollTo(0,document.body.scrollHeight);
         };
+    }
+    function start(){
+        var channels = [{% for chan in channels %}"{{chan}}", {% end %}]
+        var channel_obj = []
+        for (var i=0; i<channels.length; i++){
+            channel_obj.push($('<option>').text(channels[i]))
+        }
+        var modal = $('<div>').append($('<h1>').text('Select a channel: '))
+        $(modal).append($('<select>').append(channel_obj))
+        $(modal).append($('<div>').append($('<button>').attr({'id': 'submitbtn'}).text('Get live log')))
+        $(modal).modal({minWidth: 200});
+        $('#submitbtn').on('click', function(){
+            var chan = $('select option:selected')[0].text
+            $.modal.close()
+            connect(chan)
+        })
+    }
+
+    $(document).ready(function(){
+        start()
+    })
+</script>
+
+    <div id="body_home">
+
+    </div>
+    <script>
+
     </script>
 </body>
 </html>
