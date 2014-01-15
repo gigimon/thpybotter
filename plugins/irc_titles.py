@@ -1,4 +1,4 @@
-__author__ = 'Darwin'
+__author__ = 'firej'
 
 import re
 import logging
@@ -16,7 +16,7 @@ class IRCPlugin(BasePlugin):
     name = "titles"
     enabled = True
     url_reg = r'((https?:\/\/)([\da-zA-Z\.-]+)\.([a-z\.]{2,6})([\/\w\d\.-\?%&;]*))'
-    url_reg = re.compile(url_reg)
+    url_reg = re.compile(url_reg, re.U)
 
     def _validate(self, event):
         if self.is_pubmsg(event):
@@ -39,7 +39,7 @@ class IRCPlugin(BasePlugin):
             LOG.info("Processing %s" % url)
             try:
                 tree = html.fromstring(requests.get(url, headers=headers).content)
-                title = tree.xpath('//title/text()')[0]
+                title = unicode(tree.xpath('//title/text()')[0])
                 msg[0].privmsg(msg[1].target, u'\u0002Title:\u0002 ' + title)
             except Exception as e:
                 LOG.warning("Problem in parsing page: %s" % e)
