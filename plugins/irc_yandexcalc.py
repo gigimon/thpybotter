@@ -32,7 +32,7 @@ class IRCPlugin(BasePlugin):
         url = "http://yandex.ru/yandsearch?lr=14&text=%s" % req_str
         
         try:
-            tree = html.fromstring(requests.get(url, headers=headers).content)
+            tree = html.fromstring(requests.Session().get(url, headers=headers).content)
             data = tree.xpath("//div[contains(@class, 'z-converter__data z-converter_nodata')]")[0].text_content()
             # Making UTF-8 numbers float and rounding them.
             data = re.sub("([,\d]+)", lambda m: "%s" % float(m.group(0).replace(",", ".")), data)
