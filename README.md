@@ -4,11 +4,11 @@ thpybotter - simple threaded python irc bot for #nnm channel
 Usage
 ======
 
-Bot can working in 2 modes:
+The bot works in 2 modes:
 
-- Daemon - for this run python main.py --daemonize. If You would stop bot, send SIGTERM to process (kill 'process')
+- Daemon - run with --daemonize. You have to send a SIGTERM in order to kill the proccess.
 
-- Standalone - for this run python main.py, for stop, press CTRL-C
+- Standalone - the default mode, run main.py with no arguments. Hit CTRL-C to kill the proccess.
 
 
 
@@ -17,8 +17,6 @@ TODO:
 
 - Change config format for .ini
 
-- Add Twitter streaming plugin
-
-- Add log plugin
+- Fix Twitter streaming plugin
 
 - Change vkontakte parser for use VK API
