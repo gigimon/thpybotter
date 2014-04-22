@@ -36,7 +36,7 @@ class IRCPlugin(BasePlugin):
             data = tree.xpath("//div[contains(@class, 'z-converter__data z-converter_nodata')]")[0].text_content()
             # Making UTF-8 numbers float and rounding them.
             data = re.sub("([,\d]+)", lambda m: "%s" % float(m.group(0).replace(",", ".")), data)
-            msg[0].privmsg(msg[1].target, data)
+            msg[0].privmsg(msg[1].target, data.encode("utf-8"))
 
         except Exception as e:
             LOG.warning("Problem in parsing page: %s" % e)
