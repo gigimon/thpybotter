@@ -53,10 +53,10 @@ class IRCPlugin(BasePlugin):
             if isinstance(f, (str, unicode)):
                 try:
                     user_id = api.get_user(f).id
-                    followers.append(user_id)
+                    followers.append(str(user_id))
                 except Exception:
                     LOG.debug("Can't get ID for %s" % user_id)
                     continue
             else:
-                followers.append(f)
+                followers.append(str(f))
         self._stream.filter(followers)

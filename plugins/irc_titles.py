@@ -14,7 +14,7 @@ LOG = logging.getLogger("irc_titles")
 
 class IRCPlugin(BasePlugin):
     name = "titles"
-    enabled = True
+    enabled = False
     url_reg = r'((https?:\/\/)([\da-zA-Z\.-]+)\.([a-z\.]{2,6})([\/\w\d\.-\?%&;]*))'
     url_reg = re.compile(url_reg, re.U)
 
