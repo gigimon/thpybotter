@@ -41,3 +41,4 @@ class IRCPlugin(BasePlugin):
             msg[0].privmsg(msg[1].target, line3)
         except Exception as e:
             LOG.warning("Problem in parsing page: %s" % e)
+            msg[0].privmsg(msg[1].target, u"Нет такого фильма, извини :(")
