@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Darwin'
 
 import logging 
@@ -14,7 +15,7 @@ class IRCPlugin(BasePlugin):
 
     def _validate(self, event):
         if self.is_pubmsg(event):
-            if '!kino' in ' '.join(event.arguments):
+            if u'!кино' in ' '.join(event.arguments):
                 return True
         return False
 
