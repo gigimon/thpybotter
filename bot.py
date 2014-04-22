@@ -22,6 +22,9 @@ class IRCBot(irc.bot.SingleServerIRCBot):
             LOG.info("Connect to channel %s" % ch)
             connect.join(ch)
 
+    def on_disconnect(self, c, e):
+        self._on_disconnect(c, e)
+
     def _message_process(self, connect, event):
         LOG.debug("Process message: %s" % event.arguments)
         if event.source.nick == self.connection.get_nickname():
@@ -39,11 +42,14 @@ class IRCBot(irc.bot.SingleServerIRCBot):
     def start(self):
         LOG.info("Start bot")
         LOG.info("Load plugins")
-        self._plugins = load_plugins()
+        plugins = load_plugins()
         LOG.info("Loaded plugins: %s" % self._plugins)
-        for p in self._plugins:
+        for p in plugins:
+            LOG.info('Initialize plugin: %s' % p.name)
+            p = p(self.connection, self.channels)
             LOG.info("Start plugin %s" % p)
             p.start()
+            self._plugins.append(p)
         LOG.info("Start loop")
         super(IRCBot, self).start()
 
