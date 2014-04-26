@@ -25,8 +25,8 @@ class IRCPlugin(BasePlugin):
 
     def _split(self, message):
         for i in range(0, len(message), 250):
-            yield message[i:i+250]
-      
+            yield u"\00314" + message[i:i+248] + u"\003"
+
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
         headers = {"User-Agent":
