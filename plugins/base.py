@@ -23,7 +23,9 @@ class BasePlugin(threading.Thread):
     def __str__(self):
         return "Plugin: %s" % self.name
 
-    def colorize(self, user, message, likes=None):
+    def colorize(self, user, message, likes=None, ups=None, downs=None):
+        if ups and downs:
+            return u"\00310%s: \00314%s\003 (\0033\u25b2%s\0033/\0034\u25bc%s\003)" % (user, message, ups, downs)
         if not likes:
             return u"\00310%s: \00314%s\003" % (user, message)
         elif likes:
