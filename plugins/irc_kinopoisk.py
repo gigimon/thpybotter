@@ -19,10 +19,6 @@ class IRCPlugin(BasePlugin):
                 return True
         return False
 
-    def _split(self, message):
-        for i in range(0, len(message), 250):
-            yield message[i:i+250]
-
     def _run(self, msg):
         try:
             name = " ".join(msg[1].arguments[0].split(" ")[1:])
@@ -36,7 +32,7 @@ class IRCPlugin(BasePlugin):
                 line3_skelet = u"\x033 %s/10 - (%s votes) | %s - %s"
             line3 = line3_skelet % (movie['rating'], movie['ratingCount'], movie['duration'], movie['url'])
             msg[0].privmsg(msg[1].target, line1)
-            for text in self._split(line2):
+            for text in self.split(line2):
                 msg[0].privmsg(msg[1].target, text)
             msg[0].privmsg(msg[1].target, line3)
         except Exception as e:

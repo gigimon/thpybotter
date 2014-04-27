@@ -23,10 +23,6 @@ class IRCPlugin(BasePlugin):
                 return True
         return False
 
-    def _split(self, message):
-        for i in range(0, len(message), 250):
-            yield u"\00314" + message[i:i+248] + u"\003"
-
     def _run(self, msg):
         urls = self.reg.findall(' '.join(msg[1].arguments))
         headers = {"User-Agent":
@@ -51,7 +47,7 @@ class IRCPlugin(BasePlugin):
                 likes = tree.xpath("//span[contains(@class, 'fw_like_count')]")[0].text
 
                 pretty_text = self.colorize(author, post_text, likes)
-                for text in self._split(pretty_text):
+                for text in self.split(pretty_text, colorized=True):
                     msg[0].privmsg(msg[1].target, text)
             except Exception as e:
                 LOG.warning("Problem in parsing page: %s" % e)

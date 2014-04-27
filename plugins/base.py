@@ -30,6 +30,13 @@ class BasePlugin(threading.Thread):
             return u"\00310%s: \00314%s\003" % (user, message)
         elif likes:
             return u"\00310%s: \00314%s \00310(\u2665%s)\003" % (user, message, likes)
+        
+    def split(self, message, colorized=None):
+        for i in range(0, len(message), 250):
+            if colorized:
+                yield u"\00314" + message[i:i+250] + u"\003"
+            else:
+                yield message[i:i+250]
 
     def is_pubmsg(self, event):
         if event.type == 'pubmsg':
