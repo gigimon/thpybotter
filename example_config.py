@@ -10,3 +10,9 @@ TWITTER_ACCESS_KEY = ""
 TWITTER_ACCESS_SECRET = ""
 
 TWITTER_FOLLOW_IDS = []
+
+LEPRA_COOKIES = {
+       '_ga': '',
+       'sid': '',
+       'uid': ''
+       }
