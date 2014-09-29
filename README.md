@@ -17,6 +17,4 @@ TODO:
 
 - Change config format for .ini
 
-- Fix Twitter streaming plugin
-
 - Change vkontakte parser for use VK API
