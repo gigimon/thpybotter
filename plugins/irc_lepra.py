@@ -17,7 +17,7 @@ LOG = logging.getLogger("irc_lepra")
 class IRCPlugin(BasePlugin):
     name = "lepra"
     enabled = True
-    reg = re.compile(r'https://[\w.]*leprosorium.ru/comments/\d+/(?:#\d+)*')
+    reg = re.compile(r'https://[\w.]*leprosorium.ru/comments/\d+/?(?:#\d+)*')
 
     def _validate(self, event):
         if self.is_pubmsg(event):
