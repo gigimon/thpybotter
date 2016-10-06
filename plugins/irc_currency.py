@@ -35,7 +35,7 @@ class IRCPlugin(BasePlugin):
             brent_tree = html.fromstring(requests.Session().get(brent_url, headers=headers).content)
 
             usd = float(usd_tree.xpath("//span[@class='uccResultAmount']")[0].text.strip())
-            eur = float(eur_tree.xpath("//span[@class='rightCol']")[0].text.strip())
+            eur = float(eur_tree.xpath("//span[@class='uccResultAmount']")[0].text.strip())
             brent = float(brent_tree.xpath("//span[@id='last_last']")[0].text)
             
 
