@@ -34,9 +34,10 @@ class IRCPlugin(BasePlugin):
             eur_tree = html.fromstring(requests.Session().get(eur_url, headers=headers).content)
             brent_tree = html.fromstring(requests.Session().get(brent_url, headers=headers).content)
 
-            usd = float(usd_tree.xpath("//td[@class='rightCol']")[0].text.strip())
-            eur = float(eur_tree.xpath("//td[@class='rightCol']")[0].text.strip())
+            usd = float(usd_tree.xpath("//span[@class='uccResultAmount']")[0].text.strip())
+            eur = float(eur_tree.xpath("//span[@class='rightCol']")[0].text.strip())
             brent = float(brent_tree.xpath("//span[@id='last_last']")[0].text)
+            
 
             msg[0].privmsg(msg[1].target, u"\00310$ \00314%.2f \00310\u20AC \00314%.2f \00310OIL: \00314%.2f\00310$" % (usd, eur, brent))
 
